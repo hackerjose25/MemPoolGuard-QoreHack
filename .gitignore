@@ -1,12 +1,13 @@
-# Local dependencies and build output
-app/node_modules/
-app/dist/
+# Dependencies and build output
+node_modules/
+dist/
 
-# Local environment files (keep only the safe template)
-app/.env
-app/.env.*
-!app/.env.example
+# Local environment files (only the template is committed)
+.env
+.env.*
+!.env.example
 *.local
 
-# Local dev logs
-app/vite.*.log
+# Editor / logs
+.vscode/
+*.log

@@ -1,8 +1,13 @@
-# AI usage log
+# AI usage
 
-This repository contains a concept and handoff brief, not a current app implementation.
-
-## 2026-11-16 — Quantum Quest concept and handoff
-- AI assistance: helped evaluate the original event check-in and ProofStamp concepts against QoreChain/QoreX constraints, then drafted the Quantum Quest product brief, technical risks, decisions, and Claude handoff.
-- Human contribution: user rejected the earlier ideas, selected Quantum Quest, and requested removal of implementation code in favor of documentation for Claude.
-- Verification: no Quantum Quest code, wallet session, testnet transaction, contract, or deployment has been produced or verified.
+## 2026-11-16: Mempool Guard
+- **AI assistance (Claude Code):**
+  - Checked the Quantum Pass requirements and the QoreX/QoreChain APIs against current docs and the live Diana testnet.
+  - Proposed game concepts.
+  - Designed and implemented the game engine, chain verification, UI and tests.
+  - Wrote the documentation.
+- **Human contribution:**
+  - Chose the track and selected the Mempool Guard concept.
+  - Set the quality bar: a polished, dynamic UI, and a play screen that fits one frame.
+  - Reviewed the running build and approved publishing.
+- **Verification:** see [docs/BUILD_LOG.md](docs/BUILD_LOG.md). Only observed results are recorded there.
