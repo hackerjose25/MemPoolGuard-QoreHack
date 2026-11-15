@@ -8,15 +8,9 @@ importers:
 
   .:
     dependencies:
-      '@qorechain/qorex-types':
-        specifier: 0.1.0
-        version: 0.1.0
       '@qorechain/sdk':
         specifier: ^0.14.0
         version: 0.14.0(viem@2.57.20(typescript@5.9.3))
-      qrcode.react:
-        specifier: 4.2.0
-        version: 4.2.0(react@18.3.1)
       react:
         specifier: ^18.3.1
         version: 18.3.1
@@ -398,10 +392,6 @@ packages:
     resolution: {integrity: sha512-YLzcfwkeq9mCyTcFf/BQFB7dsNIkyFcUluByp1zrJ7SRAkPj8cwPmv7jtw5Xeh7K80FgwzlvtBeZb/dzzknWZA==}
     engines: {node: '>=18'}
 
-  '@qorechain/qorex-types@0.1.0':
-    resolution: {integrity: sha512-M3rzdQp9YfEPuQ2EnBtqjAxR61T4lPD0JrW35Hh7k6Ny4E0o3qITvGGN8ssHnBzPz0yq2vVY/BECpjaAvT5xWQ==}
-    engines: {node: '>=20'}
-
   '@qorechain/sdk@0.14.0':
     resolution: {integrity: sha512-EwoH2WX5hRUK685a3NDDd0dZcn7QL/6M11huVh7Kx37nFDMryF8QAHrJe0to8EcRmRnLbMH5UNnZbjoI48wo9Q==}
     peerDependencies:
@@ -764,11 +754,6 @@ packages:
   postcss@8.5.33:
     resolution: {integrity: sha512-RVHEU9/Pp1Fnjr/MpAJsZoADukCKhfIi15OunEYiGktIkYLkPVvC1sioWolGDS7XByMTx9m/IGbro0Js13zhnQ==}
     engines: {node: ^10 || ^12 || >=14}
-
-  qrcode.react@4.2.0:
-    resolution: {integrity: sha512-QpgqWi8rD9DsS9EP3z7BT+5lY5SFhsqGjpgW5DY/i3mK4M9DTBNz3ErMi8BWYEfI3L0d8GIbGmcdFAS1uIRGjA==}
-    peerDependencies:
-      react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
 
   react-dom@18.3.1:
     resolution: {integrity: sha512-5m4nQKp+rZRb09LNH59GM4BxTh9251/ylbKIbpe7TpGxfJ+9kv6BLkLBXIjjspbgbnIBNqlI23tRnTWT0snUIw==}
@@ -1321,8 +1306,6 @@ snapshots:
       '@noble/hashes': 2.4.0
       '@noble/post-quantum': 0.7.1
 
-  '@qorechain/qorex-types@0.1.0': {}
-
   '@qorechain/sdk@0.14.0(viem@2.57.20(typescript@5.9.3))':
     dependencies:
       '@bufbuild/protobuf': 2.17.0
@@ -1654,10 +1637,6 @@ snapshots:
       nanoid: 3.3.20
       picocolors: 1.1.1
       source-map-js: 1.2.2
-
-  qrcode.react@4.2.0(react@18.3.1):
-    dependencies:
-      react: 18.3.1
 
   react-dom@18.3.1(react@18.3.1):
     dependencies:

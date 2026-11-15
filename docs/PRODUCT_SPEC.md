@@ -1,52 +1,41 @@
-# Product specification
+# Quantum Quest product spec (concept)
 
 ## Summary
-**ProofStamp** fingerprints a file locally and writes its SHA-256 digest into a hybrid-signed QoreChain testnet transaction. Anyone can re-query the chain to verify the transaction and compare the digest with a file.
+Quantum Quest is a compact interactive game that helps newcomers learn QoreChain testnet basics through guided missions and one real QoreX hybrid-signed transaction.
 
-## Promise and limits
-ProofStamp shows that a QoreChain address recorded a particular digest no later than the transaction's block time. It does not prove who created the file, that the file is true, or that a file existed before the transaction. The file never leaves the browser; only its digest and the submitting public address are recorded on the public chain.
+## Player promise
+In a few minutes, a player can connect QoreX, identify the testnet and wallet address, review a native transaction, approve it in QoreX, and independently inspect the chain's hybrid-signature verdict. Game progress or badges must not be described as on-chain unless a real on-chain implementation exists and is verified.
 
-## User stories
-1. A user connects QoreX on Diana testnet.
-2. The user selects a file; the browser calculates SHA-256 locally.
-3. The user sees exactly what will be written and approves a tiny self-transfer plus network fee in QoreX.
-4. The app shows submitted and confirmed states separately.
-5. The app reads the transaction from testnet and verifies its memo, hash, sender, hybrid-signature extension, and chain verification event.
-6. Anyone can paste a transaction hash and independently query the same chain record; optionally compare a local file to its on-chain digest.
+## Intended audience
+Hackathon participants and QoreChain newcomers who want a hands-on introduction to QoreX, Diana testnet, and hybrid signing.
 
-## Functional requirements
-### Wallet and network
-- Connect/disconnect QoreX using the installed native provider and `signAndBroadcast` capability.
-- On mobile, show a QR that opens the app URL and explain that connection must be approved inside QoreX's dApp browser. Mark localhost links unavailable to other devices.
-- Show Diana testnet and shortened address.
-- Block writes if QoreX is on the wrong network; do not request or retain key material.
+## Candidate mission flow
+1. **Connect:** connect QoreX and show the selected network and shortened public address.
+2. **Find Diana:** teach the player to recognize `qorechain-diana` and explain why wrong-network writes are blocked.
+3. **Review the transaction:** explain the message, memo, and expected fee before the wallet prompt.
+4. **Sign a real testnet action:** request one minimal, clearly explained native-lane action through QoreX `signAndBroadcast`; the QoreX approval is mandatory.
+5. **Verify:** query the transaction from Diana REST and check its hash, result code, PQC signature extension, and `pqc_hybrid_verify` status.
+6. **Finish:** unlock a local/shareable progress badge derived from the verified receipt. Be clear if the badge itself is not stored on-chain.
 
-### File proof
-- Hash selected file with Web Crypto SHA-256 in-browser; never upload the file.
-- Record only a versioned proof tag plus the 64-character digest in the transaction memo. Do not publish filename, contents, or personal metadata.
-- Submit a 1 uqor self-transfer using the supported QoreX native transaction path; the QoreX approval displays the network fee. The token amount returns to the same address; the network fee is separate.
-- Distinguish wallet approval, transaction submission, chain confirmation, and verification.
-- Verify against fresh Diana REST data. Require matching chain ID, returned transaction hash, successful result code, exact proof memo, expected self-transfer, `PQCHybridSignature` with a 4,627-byte ML-DSA-87 signature, and `pqc_hybrid_verify` status `verified` for the sender.
-- Fail closed on wrong network, rejected signature, missing transaction, unavailable API, invalid memo, or missing/inconsistent signature evidence.
+The exact transaction type, message, and memo are undecided and must be validated with current QoreChain docs and an explicit user-approved testnet transaction before implementation is considered complete. No transaction should be submitted automatically.
 
-## Non-functional requirements
-- Responsive and accessible desktop/mobile UI.
-- Explain that the wallet address proves submission only and that chain records are public and durable.
-- No seed phrases, filenames, file bytes, identities, or private metadata on-chain.
-- Keep REST reads on the testnet endpoint and configure a same-origin proxy for local development and Vercel.
+## Track requirements
+- Scaffold with `create-qorechain-dapp`.
+- Connect QoreX.
+- Deploy on testnet (clarify whether organizers mean the web app or a smart contract).
+- Complete one hybrid-signed transaction and independently read it back.
+- Keep the demo understandable in three minutes.
 
-## MVP acceptance checklist
-- [x] Generated from `create-qorechain-dapp` and connected to QoreX native provider.
-- [ ] Hash a selected file locally and show the resulting digest.
-- [ ] Submit a real QoreX hybrid-signed testnet transaction containing the digest.
-- [ ] Independently read back and verify the hash, transaction and hybrid-signature evidence.
-- [ ] Public Vercel deployment and public repo instructions.
-- [ ] Handle wrong network, rejected signature, pending confirmation and chain/API failure.
-- [ ] Record a real transaction hash and evidence after a user-signed testnet run; no placeholder evidence.
+## User-facing truth and privacy
+- Testnet only; clearly show `qorechain-diana` before any write.
+- A verified transaction proves that an address submitted a transaction; it does not prove a human identity or a physical-world achievement.
+- QoreChain transaction data and memos are public and durable. Do not place names or personal data in a memo.
+- Explain any token amount and fee before QoreX approval.
+- Never ask for a seed phrase or private key.
 
-## Three-minute demo
-1. Explain the narrow promise and public-data limits.
-2. Connect QoreX on Diana testnet and choose a harmless sample file.
-3. Show its local SHA-256 digest and approve the clearly described transaction in QoreX.
-4. Show chain confirmation, the hybrid verdict, and the receipt.
-5. Verify the receipt again from fresh chain data and compare the same file.
+## Open product decisions
+1. Does “deploy on testnet” mean app deployment, contract deployment, or both?
+2. What quest action is meaningful, safe, and readable in QoreX's native signing approval?
+3. Should score/progress remain local and receipt-derived, or should the game deploy a Solidity contract?
+4. If a scoreboard contract is required, what supported EVM signer path is acceptable alongside QoreX?
+5. Which active chain data proves the transaction and hybrid verdict for the chosen message?

@@ -1,41 +1,19 @@
 # Build log
 
-Append entries as work happens. Record observed evidence, not intentions.
+## 2026-11-16 — Cleared prior app for concept handoff
+- Changed: removed tracked ProofStamp and Quantum Queue application source/configuration; replaced stale product and technical docs with the Quantum Quest concept. Added `CLAUDE_HANDOFF.md` as the intended portable brief.
+- Evidence/status: documentation-only handoff prepared. No app build, contract deployment, QoreX approval, or Diana testnet transaction was performed for Quantum Quest.
+- Decisions or risks: the repo history still contains earlier app commits, but the current working tree has no tracked application implementation. The live meaning of “deploy on testnet” remains an architecture decision.
+- Next: use the handoff brief to validate the track interpretation and official kit path before authorizing implementation.
 
-## 2026-11-15 — Project kickoff
-- Reviewed Quantum Pass track, start guide, kits, rules, and technical overview.
-- Selected Quantum Queue: QoreChain testnet event check-in with verifiable transaction receipts.
-- Added initial README, product spec, technical plan, decision record, agent instructions, and AI-use template.
-- Status: documentation only. No scaffold, contract, app, transaction, tests, or deployment yet.
-- Follow-up: verify the exact QoreX/SDK hybrid-signature path and chain readback before committing to the final write flow.
-
-### 2026-11-15 — Official app starter and QoreX connection shell
-- Changed: generated `app/` with `create-qorechain-dapp@0.14.0 --template fullstack-web`; added a responsive Quantum Queue landing/workspace screen, Diana testnet QoreX native-provider connection, capability status, safe disabled event-creation state, package manifest/lockfile, app ignore rules, and setup notes.
-- Evidence/status: TypeScript `tsc --noEmit` completed without diagnostics; Vite production build completed and emitted `app/dist/`. No QoreX wallet session, testnet transaction, contract, or chain readback was performed.
-- Decisions or risks: current official QoreX docs identify `native.signAndBroadcast` as the hybrid native-lane path. EVM methods in the QoreX connector remain read-only in the current wallet release. Event actions stay disabled until an on-chain registry exists.
-- Next: implement and validate the minimal event registry, then connect QoreX transaction submission to independently queried chain readback and verify the returned hybrid shield status.
-
-### 2026-11-15 — QR handoff to QoreX mobile browser
-- Changed: Connect QoreX now opens a locally generated QR for the current app URL when no QoreX provider is injected. Added copy-link control, QoreX dApp-browser instructions, and a warning when the app is on localhost or not HTTPS. Added `qrcode.react` 4.2.0.
-- Evidence/status: TypeScript check passed; Vite production build passed. QR generation is local. No live phone handoff or wallet approval was tested. A phone cannot access the local development URL; QR phone use requires a public HTTPS deployment.
-- Decisions or risks: QoreX's QR pairing/deep-link proof flow is Dashboard-only. This QR opens Quantum Queue; the user then opens that URL inside QoreX's dApp browser to connect. It does not pair the mobile wallet back to the desktop browser.
-- Next: deploy to a public HTTPS origin before validating the QR with Google Lens and QoreX on a phone.
-
-### 2026-11-15 — Clarify desktop QoreX connection
-- Changed: the QR dialog now explains that scanning connects only the phone's page and links to the official QoreX Chrome/Edge extension for connecting the laptop tab. Added the same desktop/mobile distinction to setup and architecture notes.
-- Evidence/status: `npm run build` passed (TypeScript check and Vite production build). No live browser extension connection was performed.
-- Decisions or risks: the laptop connection requires QoreX's browser extension installed and unlocked in that browser; the extension must be switched to Diana testnet before testnet actions.
-- Next: install the official extension on the target desktop browser and confirm that QoreX injects its native provider on the deployed app origin.
-
-## Entry template
-### YYYY-MM-DD — Short change title
-- Changed:
+## 2026-11-16 — Built Mempool Guard (Quantum Quest game) in `quest/`
+- Changed: scaffolded `quest/` with `create-qorechain-dapp@0.14.0 --template fullstack-web --network testnet` (pnpm). Built Mempool Guard: a deterministic, timed validator game seeded by a live Diana block hash. Runs are submitted with QoreX `signAndBroadcast` as a 1 uqor `MsgSend` to a keyless scoreboard address, with the memo `mg1:<height>:<moves>:<score>`. The leaderboard queries `transfer.recipient` and replays each run from chain data. The lobby has a live feed of real `pqc_hybrid_verify` transactions. The old `app/` folder was not touched; it still contains an untracked `.env`.
 - Evidence/status:
-- Decisions or risks:
-- Next:
-
-### 2026-11-15 — Pivot from event check-in to ProofStamp
-- Changed: replaced the unfinished event check-in concept with a local file-hash proof app. The app computes SHA-256 in the browser, prepares a 1 uqor self-send with a versioned digest memo, uses QoreX `signAndBroadcast`, and verifies transaction and hybrid-signature data from the testnet REST API. Added a Vercel REST rewrite and revised product/technical documentation.
-- Evidence/status: `npm run build` passed (TypeScript check and Vite production build); the local page was visually reviewed. No live QoreX transaction or Vercel deployment has been performed.
-- Decisions or risks: self-send must be confirmed against Diana testnet with a real user-approved QoreX transaction. A proof verifies only that an address recorded a digest by a block time.
-- Next: run typecheck/build, fix any diagnostics, then make one real testnet transaction and record only observed chain evidence.
+  - Build: `pnpm build` passes (tsc + vite). The main bundle is about 60 KB gzipped, with the SDK split out and loaded on demand.
+  - Engine tests (15/15 pass): the deck is deterministic per seed; legit cards satisfy every rule; replay equals live scoring; post-game, unfinished and malformed move strings are rejected; the memo is 59 bytes or less.
+  - Chain tests against live Diana through the dev proxy pass: latest and historic blocks are readable (lowest retained height was 8,790,799); 5/5 live hybrid transactions pass the hybrid checks; an unknown hash returns pending (not verified); a non-game `MsgSend` is rejected as a run; the leaderboard query works (0 entries).
+  - Synthetic run verification on a real seed block: an honest run verifies; an inflated score, a different seed block and a signer mismatch are all rejected.
+  - The `MsgSend` encoder is byte-identical to `cosmjs-types` 0.11.0.
+  - Headless Edge + Playwright: played the game end to end with no console errors. A mocked QoreX returned an unrelated real tx hash, and verification correctly failed closed. Fixed one bug this test found: the feedback step was showing the next card instead of the judged one.
+- Not yet done: a real QoreX approval and Diana transaction (needs the user), a public deployment, and checking the fest Rules page for the "deploy on testnet" wording.
+- Follow-up fix (same day): the user reported a black screen. Cause: a one-line effect `useEffect(() => window.scrollTo(...))` passed the Promise that `scrollTo` now returns in Chromium back to React as the effect's cleanup, which crashed the app. Fixed it and added a top-level error boundary. Re-verified: the page renders, and a full Playwright playthrough has no console errors.

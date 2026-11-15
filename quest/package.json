@@ -1,9 +1,9 @@
 {
-  "name": "app",
+  "name": "quest",
   "version": "0.0.0",
   "private": true,
   "type": "module",
-  "description": "Quantum Queue testnet event check-in for QoreChain.",
+  "description": "A minimal Vite + React + TypeScript QoreChain dApp using @qorechain/sdk to read balances and tokenomics.",
   "scripts": {
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
@@ -11,9 +11,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@qorechain/qorex-types": "0.1.0",
     "@qorechain/sdk": "^0.14.0",
-    "qrcode.react": "4.2.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },
