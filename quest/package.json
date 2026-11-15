@@ -1,9 +1,9 @@
 {
-  "name": "quest",
+  "name": "mempool-guard",
   "version": "0.0.0",
   "private": true,
   "type": "module",
-  "description": "A minimal Vite + React + TypeScript QoreChain dApp using @qorechain/sdk to read balances and tokenomics.",
+  "description": "Mempool Guard: post-quantum validator arcade game on QoreChain Diana testnet",
   "scripts": {
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
@@ -21,5 +21,6 @@
     "@vitejs/plugin-react": "^4.3.0",
     "typescript": "^5.6.3",
     "vite": "^5.4.0"
-  }
+  },
+  "license": "MIT"
 }

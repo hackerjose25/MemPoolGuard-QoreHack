@@ -1,5 +1,9 @@
 # Mempool Guard
 
+![Mempool Guard](docs/featured.png)
+
+**Live demo: https://mempool-guard.vercel.app/** · Category: **Quantum Pass** · License: [MIT](LICENSE)
+
 **A post-quantum validator arcade game on the QoreChain Diana testnet.** Built for the *Build Before Q-Day* Quantum Pass track.
 
 > Q-Day is here. Forged transactions are flooding the mempool, and you are the last validator standing.
@@ -25,8 +29,6 @@ Transaction packets arrive on a shrinking timer. Swipe or press ←/→ to **rej
 | Deploy on testnet | Runs against Diana (`qorechain-diana`). The web app deploys to Vercel from `quest/` |
 | One hybrid-signed transaction | The run submission goes through QoreX `signAndBroadcast` and is read back and verified from chain data |
 
-**Live demo:** https://mempool-guard.vercel.app/
-
 ## Quick start
 
 ```bash
@@ -36,6 +38,14 @@ pnpm dev      # http://localhost:5173
 ```
 
 You can play without a wallet. To submit a run on-chain you need the QoreX extension (version 0.3.5 or later) set to Diana, plus test QOR from the [faucet](https://dashboard.qorechain.io/faucet). For architecture, verification rules and deployment, see [quest/README.md](quest/README.md).
+
+## On-chain evidence (Diana testnet)
+
+- **Player and submitter address:** `qor1zheh9tukxvvmgvvjd3lq2fehd68h7av6ss3vz4`
+- **Scoreboard address (keyless):** `qor1mvtlqsty0aw70cj2zgu3y32hsza0pwnm898m5q`
+- **Hybrid-signed run transactions.** Both have code 0, a 4,627-byte ML-DSA-87 signature, and `pqc_hybrid_verify = verified`:
+  - [`2A65CCDD709784B2A7B75E3CF8E14C13D1E4F270277489BB16378A46C488DD48`](https://api-testnet.qore.host/cosmos/tx/v1beta1/txs/2A65CCDD709784B2A7B75E3CF8E14C13D1E4F270277489BB16378A46C488DD48): block 10,153,126, 1,300 points, replay-verified on the leaderboard
+  - [`A44D2B462BE9B3C887D4C3D35B2271201587AB5805909EA2902FC795595FD0BE`](https://api-testnet.qore.host/cosmos/tx/v1beta1/txs/A44D2B462BE9B3C887D4C3D35B2271201587AB5805909EA2902FC795595FD0BE): block 10,152,719, 550 points
 
 ## Honest limits
 
@@ -52,3 +62,14 @@ You can play without a wallet. To submit a run on-chain you need the QoreX exten
 | [docs/DECISIONS.md](docs/DECISIONS.md) | Architecture decisions |
 | [docs/BUILD_LOG.md](docs/BUILD_LOG.md) | Observed build and test evidence |
 | [AI_USAGE.md](AI_USAGE.md) | AI-assistance disclosure |
+
+## Credits
+
+- Scaffolded with **[create-qorechain-dapp](https://www.npmjs.com/package/create-qorechain-dapp)** 0.14.0 (`fullstack-web` template) from the QoreChain Chain Developer Kit, and uses **[@qorechain/sdk](https://www.npmjs.com/package/@qorechain/sdk)** 0.14.0.
+- Wallet integration follows the [QoreX browser-extension docs](https://docs.qorechain.io/qorex/browser-extension/). The hybrid-transaction read-back follows the [Hybrid Inspector workshop](https://docs.qorechain.io/build-before-qday/workshop-1/apps/hybrid-inspector/).
+- Fonts: Space Grotesk and JetBrains Mono (Google Fonts, SIL OFL).
+- AI assistance is disclosed in [AI_USAGE.md](AI_USAGE.md).
+
+## License
+
+[MIT](LICENSE) © 2026 hackerjose25
