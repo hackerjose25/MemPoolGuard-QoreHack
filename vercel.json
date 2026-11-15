@@ -1,0 +1,9 @@
+{
+  "installCommand": "cd quest && pnpm install --frozen-lockfile",
+  "buildCommand": "cd quest && pnpm build",
+  "outputDirectory": "quest/dist",
+  "framework": null,
+  "rewrites": [
+    { "source": "/lcd/:path*", "destination": "https://api-testnet.qore.host/:path*" }
+  ]
+}
