@@ -53,7 +53,7 @@ pnpm install
 pnpm dev
 ```
 
-The first screen connects through QoreX's native provider on `qorechain-diana`. Keep QoreX set to testnet. Event creation remains disabled until the event registry contract is implemented and deployed. Do not treat this starter screen as evidence of an on-chain event or receipt.
+The first screen connects through QoreX's native provider on `qorechain-diana`. If QoreX is not injected, Connect QoreX shows a QR for the app URL and guides the attendee to open that URL in QoreX's dApp browser. Phone scanning requires the app to be hosted at a public HTTPS address; a local `localhost` preview cannot be opened by another device. Keep QoreX set to testnet. Event creation remains disabled until the event registry contract is implemented and deployed. Do not treat this starter screen as evidence of an on-chain event or receipt.
 
 ## Project layout
 

@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { getQorexNative, hasCapability } from "@qorechain/qorex-types";
+import { QRCodeSVG } from "qrcode.react";
 import "./app.css";
 
 const TESTNET_ID = "qorechain-diana";
@@ -16,14 +17,37 @@ function shortAddress(address: string): string {
 
 export function App(): JSX.Element {
   const [wallet, setWallet] = useState<WalletState>({ status: "disconnected" });
+  const [showMobileConnect, setShowMobileConnect] = useState(false);
+  const [copied, setCopied] = useState(false);
+  const closeModalRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    if (!showMobileConnect) return;
+    closeModalRef.current?.focus();
+    const closeOnEscape = (event: KeyboardEvent): void => {
+      if (event.key === "Escape") setShowMobileConnect(false);
+    };
+    window.addEventListener("keydown", closeOnEscape);
+    return () => window.removeEventListener("keydown", closeOnEscape);
+  }, [showMobileConnect]);
+
+  const appUrl = new URL(window.location.pathname, window.location.origin);
+  const mobileUrl = appUrl.toString();
+  const isLocalAddress = ["localhost", "127.0.0.1", "::1"].includes(appUrl.hostname);
+  const canScanFromPhone = appUrl.protocol === "https:" && !isLocalAddress;
+  const phoneLinkMessage = isLocalAddress
+    ? "This local preview uses localhost, which points back to the phone itself. Host the app on public HTTPS before scanning."
+    : "Phone scanning requires a public HTTPS address for the app.";
 
   async function connectWallet(): Promise<void> {
+    const native = getQorexNative();
+    if (!native) {
+      setShowMobileConnect(true);
+      return;
+    }
+
     setWallet({ status: "connecting" });
     try {
-      const native = getQorexNative();
-      if (!native) {
-        throw new Error("QoreX was not found. Install or open the QoreX wallet, then try again.");
-      }
       await native.enable(TESTNET_ID);
       const key = await native.getKey(TESTNET_ID);
       setWallet({
@@ -36,6 +60,16 @@ export function App(): JSX.Element {
         status: "error",
         message: error instanceof Error ? error.message : "QoreX connection failed. Please try again.",
       });
+    }
+  }
+
+  async function copyAppLink(): Promise<void> {
+    try {
+      await navigator.clipboard.writeText(mobileUrl);
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 1800);
+    } catch {
+      setCopied(false);
     }
   }
 
@@ -124,6 +158,45 @@ export function App(): JSX.Element {
         <span>Testnet only</span>
         <span className="footer-right">Public records. Verifiable receipts.</span>
       </footer>
+
+      {showMobileConnect && (
+        <div
+          className="modal-backdrop"
+          role="presentation"
+          onMouseDown={(event) => {
+            if (event.target === event.currentTarget) setShowMobileConnect(false);
+          }}
+        >
+          <section className="connect-modal" role="dialog" aria-modal="true" aria-labelledby="connect-title">
+            <button ref={closeModalRef} className="modal-close" onClick={() => setShowMobileConnect(false)} aria-label="Close QoreX connection dialog">×</button>
+            <div className="modal-kicker"><span className="live-dot" /> MOBILE WALLET CONNECTION</div>
+            <h2 id="connect-title">Continue with QoreX</h2>
+            <p className="modal-intro">Scan to open Quantum Queue on your phone. Connect from inside QoreX’s dApp browser so the wallet can approve this site.</p>
+
+            <div className="qr-frame">
+              <QRCodeSVG value={mobileUrl} size={212} level="M" marginSize={2} aria-label={`QR code for ${mobileUrl}`} />
+            </div>
+
+            {canScanFromPhone ? (
+              <div className="scan-status ready"><span className="status-dot" /> This secure link can be opened on your phone.</div>
+            ) : (
+              <div className="scan-status warning"><span className="status-dot" /> {phoneLinkMessage}</div>
+            )}
+
+            <ol className="connect-steps">
+              <li><span>1</span><div>Scan with Google Lens and open the Quantum Queue link.</div></li>
+              <li><span>2</span><div>In QoreX, switch to <strong>Diana testnet</strong> in Settings, then open <strong>Home → dApp Browser</strong> and visit the same link.</div></li>
+              <li><span>3</span><div>Tap <strong>Connect QoreX</strong> there and approve the connection.</div></li>
+            </ol>
+
+            <button className="copy-link-button" onClick={copyAppLink} disabled={!canScanFromPhone}>
+              {copied ? "Link copied" : "Copy app link"}
+              <span aria-hidden="true">{copied ? "✓" : "↗"}</span>
+            </button>
+            <p className="modal-footnote">The QR opens this website. It does not contain wallet credentials or approve a transaction.</p>
+          </section>
+        </div>
+      )}
     </main>
   );
 }

@@ -15,6 +15,12 @@ Append entries as work happens. Record observed evidence, not intentions.
 - Decisions or risks: current official QoreX docs identify `native.signAndBroadcast` as the hybrid native-lane path. EVM methods in the QoreX connector remain read-only in the current wallet release. Event actions stay disabled until an on-chain registry exists.
 - Next: implement and validate the minimal event registry, then connect QoreX transaction submission to independently queried chain readback and verify the returned hybrid shield status.
 
+### 2026-11-15 — QR handoff to QoreX mobile browser
+- Changed: Connect QoreX now opens a locally generated QR for the current app URL when no QoreX provider is injected. Added copy-link control, QoreX dApp-browser instructions, and a warning when the app is on localhost or not HTTPS. Added `qrcode.react` 4.2.0.
+- Evidence/status: TypeScript check passed; Vite production build passed. QR generation is local. No live phone handoff or wallet approval was tested. A phone cannot access the local development URL; QR phone use requires a public HTTPS deployment.
+- Decisions or risks: QoreX's QR pairing/deep-link proof flow is Dashboard-only. This QR opens Quantum Queue; the user then opens that URL inside QoreX's dApp browser to connect. It does not pair the mobile wallet back to the desktop browser.
+- Next: deploy to a public HTTPS origin before validating the QR with Google Lens and QoreX on a phone.
+
 ## Entry template
 ### YYYY-MM-DD — Short change title
 - Changed:

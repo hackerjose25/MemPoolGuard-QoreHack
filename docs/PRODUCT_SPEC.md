@@ -23,6 +23,7 @@ Attendance is often proved with screenshots or a trusted private spreadsheet. Qu
 ## Functional requirements
 ### Wallet and network
 - Connect/disconnect QoreX using the supported QoreChain integration.
+- On mobile, show a QR that opens the app URL and explain that connection must be approved from inside QoreX's dApp browser. A local development URL must be clearly marked as unavailable to other devices.
 - Show testnet and shortened address.
 - Block writes on the wrong network with a clear recovery instruction.
 - Never request or retain key material.
