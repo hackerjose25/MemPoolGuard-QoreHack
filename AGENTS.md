@@ -1,26 +1,26 @@
-# Agent instructions for Quantum Queue
+# Agent instructions for ProofStamp
 
 ## Goal
-Build a small, polished QoreChain testnet event check-in app. Organizers create and open events; attendees check in with QoreX; the app reads the receipt back from chain data.
+Build a small, polished QoreChain Diana testnet app that fingerprints a file locally, records its SHA-256 digest in a QoreX hybrid-signed native transaction, and independently verifies that receipt from chain data.
 
 ## Product constraints
 - Keep the release within Quantum Pass scope and make the core flow demoable in three minutes.
-- The required happy path must be real on testnet: QoreX connection, deployment, hybrid-signed transaction, and chain readback.
+- The required happy path must be real on testnet: QoreX connection, public app deployment, hybrid-signed transaction, and fresh chain readback.
 - Never show mock/local data as on-chain proof. Label development fixtures clearly.
-- A wallet proves an address submitted a transaction, not a human identity or physical presence.
-- Public-chain records are public and durable. Do not call attendance private.
+- A wallet proves an address submitted a transaction, not file authorship, human identity, or when the file was created.
+- Public-chain records are public and durable. Never call the proof private or imply that the file itself is uploaded.
 - Never request or store seed phrases/private keys. Never commit secrets or `.env` files.
-- Testnet only. Make the active network visible and guard write actions against wrong network.
+- Testnet only. Make the active network visible and guard writes against the wrong network.
+- Store only a SHA-256 digest in the transaction memo; do not put filenames or file contents on-chain.
 
 ## Implementation practices
 - Follow the generated `create-qorechain-dapp` structure and current official QoreChain docs. Verify SDK APIs against installed versions; do not invent method names.
-- Keep keys in QoreX / supported signing flows.
+- Keep keys in QoreX / supported signing flows. Use `signAndBroadcast` for native-lane writes.
 - Represent submission and confirmation as separate UI states. Handle pending, confirmed, rejected, and failed states.
-- Enforce organizer permissions and duplicate/closed-event rejection on-chain, not only in the UI.
-- Validate chain ID, contract address, and retrieved receipt before displaying “verified.” Fail closed if RPC data is unavailable or inconsistent.
+- Validate the chain ID, transaction hash, expected message/memo, hybrid signature extension, and `pqc_hybrid_verify` result before displaying “verified.” Fail closed if RPC data is unavailable or inconsistent.
 - Keep mobile and accessible layouts; explain signatures, fees, and public data in plain language.
 - Document environment variables in `.env.example` with safe sample values.
-- Run focused tests/build checks for implemented contract and app changes; report only observed results.
+- Run focused checks for implemented app changes and report only observed results.
 
 ## Documentation ownership
 - `README.md`: overview and actual setup instructions.
@@ -29,11 +29,4 @@ Build a small, polished QoreChain testnet event check-in app. Organizers create 
 - `docs/DECISIONS.md`: material choices with rationale.
 - `docs/BUILD_LOG.md`: append dated entries with actual changes/evidence; never backdate or imply unfinished work passed.
 - `AI_USAGE.md`: accurate AI assistance and human verification disclosure.
-- Update documentation when packages, routes, contract addresses, commands, or transaction flow change.
-
-## Feature completion checklist
-1. Behavior matches the product spec.
-2. Wrong-network, loading, rejected-signature, and chain/API failure states are handled.
-3. Claimed on-chain data is independently queryable on testnet.
-4. Relevant checks were actually run; report real outcomes.
-5. README and build log reflect the delivered state.
+- Update documentation when packages, routes, chain endpoints, commands, or transaction flow change.

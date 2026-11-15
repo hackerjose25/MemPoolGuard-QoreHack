@@ -2,9 +2,8 @@ import react from "@vitejs/plugin-react";
 import { defineConfig, loadEnv } from "vite";
 
 // The public REST API sends no CORS headers, so the browser reaches it through
-// the dev (and preview) server: /lcd/* is forwarded to QORE_REST_PROXY_TARGET.
-// In production, serve the app behind a proxy that does the same, or set
-// VITE_QORE_REST_URL to an endpoint that allows your origin.
+// dev (and preview) server: /lcd/* is forwarded to QORE_REST_PROXY_TARGET.
+// Vercel uses the equivalent rewrite in vercel.json.
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, ".", "");
   const target = env.QORE_REST_PROXY_TARGET || "http://localhost:1317";

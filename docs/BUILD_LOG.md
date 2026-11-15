@@ -33,3 +33,9 @@ Append entries as work happens. Record observed evidence, not intentions.
 - Evidence/status:
 - Decisions or risks:
 - Next:
+
+### 2026-11-15 — Pivot from event check-in to ProofStamp
+- Changed: replaced the unfinished event check-in concept with a local file-hash proof app. The app computes SHA-256 in the browser, prepares a 1 uqor self-send with a versioned digest memo, uses QoreX `signAndBroadcast`, and verifies transaction and hybrid-signature data from the testnet REST API. Added a Vercel REST rewrite and revised product/technical documentation.
+- Evidence/status: `npm run build` passed (TypeScript check and Vite production build); the local page was visually reviewed. No live QoreX transaction or Vercel deployment has been performed.
+- Decisions or risks: self-send must be confirmed against Diana testnet with a real user-approved QoreX transaction. A proof verifies only that an address recorded a digest by a block time.
+- Next: run typecheck/build, fix any diagnostics, then make one real testnet transaction and record only observed chain evidence.

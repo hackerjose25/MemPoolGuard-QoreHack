@@ -1,86 +1,40 @@
-# Quantum Queue
+# ProofStamp
 
-**Post-quantum event check-in with a receipt anyone can verify.**
+**A file fingerprint, timestamped by a hybrid-signed QoreChain transaction.**
 
-Quantum Queue is a small QoreChain testnet web app for event check-in. An organizer creates an event and opens a check-in window. An attendee connects QoreX, checks in, and receives a receipt tied to a transaction on QoreChain. The app reads the receipt back from the chain so it can be verified without relying on a screenshot.
+ProofStamp computes a file's SHA-256 digest locally in your browser and records that digest in a QoreX-signed transaction on the QoreChain Diana testnet. It then reads the receipt back from chain data so anyone can verify the digest and the hybrid-signature verdict.
 
-> Status: app starter and first QoreX connection screen are in progress. No contract is deployed and no transaction or receipt has been verified yet.
+> The file never leaves your browser. The digest, transaction memo, wallet address and transaction are public and durable. A receipt shows that an address recorded a digest by a block time; it does not prove who created the file, whether its contents are true, or that it existed earlier.
 
-## Why this project
+## Run locally
 
-Quantum Queue is designed for Quantum Pass: build with `create-qorechain-dapp`, connect QoreX, deploy on testnet, and complete a hybrid-signed transaction. Check-in gives that transaction a clear user-facing purpose.
-
-## MVP flow
-
-1. Organizer connects QoreX and creates an event.
-2. Organizer opens check-in.
-3. Attendee connects QoreX and checks in once.
-4. App shows a receipt with event ID, shortened wallet address, transaction hash, confirmation, and signature verdict when available.
-5. Anyone can verify the receipt by looking up the transaction on-chain.
-
-## MVP scope
-
-- Responsive web app; event creation and open/close controls.
-- QoreX connection with visible account and testnet state.
-- One check-in per address per event.
-- Testnet deployment and a demonstrated hybrid-signed transaction.
-- On-chain receipt lookup, explorer link, and clear pending/confirmed/rejected/error states.
-
-## Out of scope
-
-No identity/KYC, private attendance, email collection, NFTs, tokens, rewards, multi-chain support, ticket sales, or recurring events. A wallet address proves an on-chain action; it does not prove a person's real-world identity. Public chain data is public and durable.
-
-## Submission checklist
-
-The current Quantum Pass page calls for an original small app/tool/game/bot, `create-qorechain-dapp`, QoreX, testnet deployment, and one hybrid-signed transaction. The rules also list a public GitHub repository, README, MIT or Apache-2.0 license, cover image, video up to three minutes, and testnet address. Check the live site for current rules and dates.
-
-## Documentation
-
-- [Product specification](docs/PRODUCT_SPEC.md)
-- [Technical plan](docs/TECHNICAL_PLAN.md)
-- [Build history](docs/BUILD_LOG.md)
-- [Decision record](docs/DECISIONS.md)
-- [AI usage log](AI_USAGE.md)
-- [Agent instructions](AGENTS.md)
-
-## Run the app
-
-The generated Vite app lives in `app/`. Use Node.js 20 or newer and install dependencies from that directory:
+Use Node.js 20+ and pnpm. In `app/`:
 
 ```sh
-cd app
 pnpm install
 pnpm dev
 ```
 
-The first screen connects through QoreX's native provider on `qorechain-diana`. If QoreX is not injected, Connect QoreX shows a QR for the app URL and guides the attendee to open that URL in QoreX's dApp browser. Phone scanning requires the app to be hosted at a public HTTPS address; a local `localhost` preview cannot be opened by another device. Keep QoreX set to testnet. Event creation remains disabled until the event registry contract is implemented and deployed. Do not treat this starter screen as evidence of an on-chain event or receipt.
+Open the local URL in the same desktop browser where QoreX is installed. Unlock QoreX and switch it to **Diana testnet**. If prompted, approve the site's connection. The app never asks for a recovery phrase or private key.
 
-## Project layout
+The REST API is proxied through `/lcd` in Vite because the public testnet REST endpoint does not send browser CORS headers. `QORE_REST_PROXY_TARGET` defaults to `https://api-testnet.qore.host` in `.env.example`.
 
-```text
-AGENTS.md  AI_USAGE.md  LICENSE  README.md
-app/                    # generated starter app
-contracts/              # contract and deployment scripts
-docs/                   # specifications and project history
-```
+## Record a proof
 
-The app is generated from the official scaffold; contract sources and deployment scripts will be added under `contracts/` when the registry implementation is selected.
+1. Connect QoreX and choose a file. The app hashes it in the browser; it does not upload the file.
+2. Check the SHA-256 digest and the explanation of the public memo.
+3. Click **Record hybrid-signed proof**. QoreX shows the transaction and fee; approve only if the details look right.
+4. The app queries Diana testnet and shows a verified receipt only if it finds the matching memo, transaction, 4,627-byte ML-DSA-87 signature and `pqc_hybrid_verify` status `verified`.
+5. To verify later, paste the transaction hash. Optionally select the original file to compare its locally computed digest with the on-chain digest.
 
-## Status
+The transaction is a 1 uqor self-transfer. The amount returns to the same address; network fees still apply. The chain record is public and permanent.
 
-| Milestone | Status |
-|---|---|
-| Track requirements and product plan | Done |
-| App scaffold | Generated with `create-qorechain-dapp@0.14.0` (`fullstack-web`) |
-| QoreX integration | Native testnet connection screen started; hybrid transaction not yet submitted |
-| Contract and testnet deployment | Not started |
-| Hybrid-signed transaction and readback | Not started |
-| Demo and submission materials | Not started |
+## Vercel
 
-## Official links
+Set the Vercel project **Root Directory** to `app`. Vercel builds with `pnpm build`; the included `app/vercel.json` forwards `/lcd/*` reads to the Diana REST endpoint. No private environment variables are required. The app needs a public HTTPS URL for mobile use inside QoreX.
 
-- [Quantum Pass track](https://build.qorechain.io/)
-- [Start here](https://build.qorechain.io/start)
-- [Kits](https://build.qorechain.io/kits)
-- [Rules](https://build.qorechain.io/rules)
-- [Technical overview](https://docs.qorechain.io/build-before-qday/overview/)
+## Current status
+
+The interface and native transaction/readback path are implemented in source. A real proof requires an unlocked Diana testnet QoreX account with test QOR. No live transaction or public deployment has been performed yet; do not treat a local preview as chain evidence.
+
+See [product spec](docs/PRODUCT_SPEC.md), [technical plan](docs/TECHNICAL_PLAN.md), [decisions](docs/DECISIONS.md), [build log](docs/BUILD_LOG.md), and [AI usage](AI_USAGE.md).

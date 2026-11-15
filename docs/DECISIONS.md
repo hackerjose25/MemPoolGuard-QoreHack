@@ -1,29 +1,43 @@
 # Decision record
 
-## D-001 — Build Quantum Queue for Quantum Pass
+## D-001 — Original idea: Quantum Queue
 - Date: 2026-11-15
-- Status: Accepted
-- Decision: Build a compact QoreChain testnet event check-in app with transaction-backed receipts.
-- Reason: Clear everyday use; naturally demonstrates QoreX, testnet deployment, and chain verification.
-- Consequence: Explain that an address proves an on-chain action, not a person's identity.
+- Status: Superseded before implementation
+- Decision: Initially proposed a testnet event check-in app.
+- Reason: A check-in receipt is an understandable on-chain use case.
+- Consequence: Replaced with D-005 after checking current testnet deployment and QoreX write limitations.
 
 ## D-002 — Minimize personal data
 - Date: 2026-11-15
 - Status: Accepted
-- Decision: Use address/event ID for the MVP receipt; do not collect names, email, or student ID.
+- Decision: Do not collect identities or publish names, filenames or file contents.
 - Reason: Public chain records are durable and inspectable.
-- Consequence: Tell users records are public; shorten addresses by default.
+- Consequence: The app records only a SHA-256 digest and the chain records the submitting address.
 
-## D-003 — Verify hybrid signature path before final architecture
-- Date: 2026-11-15
-- Status: Open implementation gate
-- Decision: Do not claim EVM contract calls are hybrid-signed without chain evidence. Verify QoreX/SDK native transaction and readback first.
-- Reason: Track explicitly requires a hybrid-signed transaction; EVM and native signing paths differ.
-- Consequence: Stage 0 proves the required path before the app is considered complete.
-
-## D-004 — Use the QoreX native lane for hybrid-signed actions
+## D-003 — Verify the hybrid signature on chain
 - Date: 2026-11-15
 - Status: Accepted
-- Decision: Use QoreX's native `signAndBroadcast` path for event actions and receipt-producing writes; do not rely on the QoreX EVM connector for writes.
-- Reason: Current QoreX EVM methods are read-only. The native lane is the supported path that adds and reports the hybrid signature layer.
-- Consequence: Implement event state in a native-lane contract/module. Verify `shielded` plus fresh chain readback before displaying a receipt as verified.
+- Decision: Do not call a transaction hybrid-verified based only on a wallet response; require the chain transaction record, PQC extension and verification event.
+- Reason: The app must show independent evidence from Diana testnet.
+- Consequence: Fail closed when fresh chain evidence is unavailable or inconsistent.
+
+## D-004 — Use QoreX native signing
+- Date: 2026-11-15
+- Status: Accepted
+- Decision: Use QoreX's native `signAndBroadcast` path for hybrid-signed actions.
+- Reason: Current QoreX EVM methods are read-only; the native lane is the supported dApp path that adds the ML-DSA-87 layer.
+- Consequence: Keep transaction creation in the wallet's supported signing flow and verify `shielded` plus fresh chain readback.
+
+## D-005 — Pivot to ProofStamp
+- Date: 2026-11-15
+- Status: Accepted
+- Decision: Replace the event check-in app with ProofStamp, a local file-fingerprint and public testnet timestamp tool using QoreX native transactions.
+- Reason: Diana testnet blocks uploads of user CosmWasm code and current QoreX EVM signing is unavailable. QoreX's documented native `signAndBroadcast` path supports a real hybrid-signed transaction and chain readback without custom contract deployment or another wallet.
+- Consequence: The app records a SHA-256 digest in a transaction memo. The memo and address are public and durable. The receipt proves only that the address recorded that digest by the transaction's block time; it does not prove authorship, truth, or earlier file existence.
+
+## D-006 — Use an exact, low-value self-transfer as the proof transaction
+- Date: 2026-11-15
+- Status: Accepted, subject to live testnet confirmation
+- Decision: Submit a 1 uqor `MsgSend` from the connected address to itself with memo `QPROOF/1:<sha256-hex>`.
+- Reason: This uses a supported, wallet-decodable native message and leaves the digest available in public chain data, while the token amount returns to the sender. The network fee remains payable.
+- Consequence: Display the 1 uqor amount and fee before wallet approval, and do not call this a no-cost transaction. If the chain rejects self-send, stop and choose another supported transaction shape rather than showing a local fixture as proof.

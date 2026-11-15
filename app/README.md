@@ -1,18 +1,18 @@
-# Quantum Queue app
+# ProofStamp app
 
-The Vite + React + TypeScript front end for Quantum Queue. It uses the QoreChain SDK 0.14 line and QoreX integration types 0.1.0. The current screen connects to QoreX's native provider on the Diana testnet and checks for the native `signAndBroadcast` capability. If QoreX is not injected, a local QR modal opens with the app URL and the steps for opening it inside QoreX's dApp browser. Phone scanning requires a public HTTPS deployment; localhost links only work on the computer that runs the dev server.
+React, TypeScript and Vite client for ProofStamp. It fingerprints files locally with Web Crypto, submits the digest in a QoreX hybrid-signed Diana testnet self-transfer, and verifies receipts from fresh testnet REST data.
 
-## Start
-
-From this directory, install dependencies and start the Vite dev server:
+## Development
 
 ```sh
 pnpm install
 pnpm dev
 ```
 
-Use Node.js 20 or later. Keep QoreX on `qorechain-diana` (testnet). No private key or recovery phrase is requested by the app.
+Use Node.js 20+ and an unlocked QoreX extension in the same browser, switched to `qorechain-diana`. The app requires the native `signAndBroadcast` capability. It never requests seed phrases or private keys.
 
-## Current limits
+## Environment
 
-The QR contains only the current app URL. It does not use QoreX's Dashboard-only `qorex://connect` pairing flow, and connecting on a phone does not connect a separate laptop tab. On mobile, open the site from QoreX's dApp browser. On desktop, install and unlock the [QoreX browser extension](https://chromewebstore.google.com/detail/qorex/cflpnggbnnifibblifgbeobogdpfjpcg) in Chrome or Edge, then connect from that browser. The event registry is not implemented or deployed. Event creation is intentionally disabled. A connected wallet does not mean an event or check-in has been written on-chain. The next implementation step is a minimal native-lane event registry and its QoreX transaction/readback flow.
+`VITE_QORE_REST_URL` is the same-origin REST path, default `/lcd`. `QORE_REST_PROXY_TARGET` is used by the Vite development proxy and defaults to `https://api-testnet.qore.host`. `vercel.json` provides the corresponding deployed rewrite.
+
+The transaction memo is `QPROOF/1:<sha256-hex>`. It contains no filename or file content. The self-transfer amount is 1 uqor, plus the network fee shown by QoreX.

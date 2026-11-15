@@ -1,69 +1,52 @@
 # Product specification
 
 ## Summary
-**Quantum Queue** is a QoreChain testnet event check-in app with transaction-backed receipts anyone can verify.
+**ProofStamp** fingerprints a file locally and writes its SHA-256 digest into a hybrid-signed QoreChain testnet transaction. Anyone can re-query the chain to verify the transaction and compare the digest with a file.
 
-## Problem and promise
-Attendance is often proved with screenshots or a trusted private spreadsheet. Quantum Queue provides a receipt that can be checked against QoreChain. It proves that a particular address submitted a check-in for an event; it does not prove the address owner's identity or physical presence.
-
-## Users
-- Organizer: creates an event and controls check-in status.
-- Attendee: connects QoreX and checks in while the event is open.
-- Verifier: looks up the receipt using transaction/event information.
+## Promise and limits
+ProofStamp shows that a QoreChain address recorded a particular digest no later than the transaction's block time. It does not prove who created the file, that the file is true, or that a file existed before the transaction. The file never leaves the browser; only its digest and the submitting public address are recorded on the public chain.
 
 ## User stories
-1. Organizer creates an event with a title and stable ID.
-2. Organizer opens or closes check-in.
-3. Attendee sees the connected account/network and approves a check-in with QoreX.
-4. Attendee sees pending, confirmed, rejected, or failed transaction status.
-5. Attendee copies a receipt with event ID, address, and transaction hash.
-6. Verifier re-queries the chain and checks the transaction/event relationship.
-7. New users understand what the signature proves and what data is public.
+1. A user connects QoreX on Diana testnet.
+2. The user selects a file; the browser calculates SHA-256 locally.
+3. The user sees exactly what will be written and approves a tiny self-transfer plus network fee in QoreX.
+4. The app shows submitted and confirmed states separately.
+5. The app reads the transaction from testnet and verifies its memo, hash, sender, hybrid-signature extension, and chain verification event.
+6. Anyone can paste a transaction hash and independently query the same chain record; optionally compare a local file to its on-chain digest.
 
 ## Functional requirements
 ### Wallet and network
-- Connect/disconnect QoreX using the supported QoreChain integration.
-- On mobile, show a QR that opens the app URL and explain that connection must be approved from inside QoreX's dApp browser. A local development URL must be clearly marked as unavailable to other devices.
-- Show testnet and shortened address.
-- Block writes on the wrong network with a clear recovery instruction.
-- Never request or retain key material.
+- Connect/disconnect QoreX using the installed native provider and `signAndBroadcast` capability.
+- On mobile, show a QR that opens the app URL and explain that connection must be approved inside QoreX's dApp browser. Mark localhost links unavailable to other devices.
+- Show Diana testnet and shortened address.
+- Block writes if QoreX is on the wrong network; do not request or retain key material.
 
-### Event lifecycle
-- Create event with non-empty title and stable unique ID.
-- Event has open/closed check-in status.
-- Organizer-only actions are enforced by contract/module authorization.
-
-### Check-in and receipts
-- Check-in is accepted only while event is open.
-- Same address cannot check in twice to one event.
-- Confirmed receipt shows event, shortened address, transaction hash, block/time where available, signature verdict where available, and explorer link.
-- Verification re-queries chain data; browser-supplied receipt text is never trusted by itself.
+### File proof
+- Hash selected file with Web Crypto SHA-256 in-browser; never upload the file.
+- Record only a versioned proof tag plus the 64-character digest in the transaction memo. Do not publish filename, contents, or personal metadata.
+- Submit a 1 uqor self-transfer using the supported QoreX native transaction path; the QoreX approval displays the network fee. The token amount returns to the same address; the network fee is separate.
+- Distinguish wallet approval, transaction submission, chain confirmation, and verification.
+- Verify against fresh Diana REST data. Require matching chain ID, returned transaction hash, successful result code, exact proof memo, expected self-transfer, `PQCHybridSignature` with a 4,627-byte ML-DSA-87 signature, and `pqc_hybrid_verify` status `verified` for the sender.
+- Fail closed on wrong network, rejected signature, missing transaction, unavailable API, invalid memo, or missing/inconsistent signature evidence.
 
 ## Non-functional requirements
-- Responsive mobile and desktop layout.
-- Plain language around fees, signatures, confirmation, and public records.
-- No names, emails, student IDs, or other personal information on-chain.
-- Verification fails closed when chain data is unavailable or inconsistent.
-- Record exact SDK/package versions used.
+- Responsive and accessible desktop/mobile UI.
+- Explain that the wallet address proves submission only and that chain records are public and durable.
+- No seed phrases, filenames, file bytes, identities, or private metadata on-chain.
+- Keep REST reads on the testnet endpoint and configure a same-origin proxy for local development and Vercel.
 
 ## MVP acceptance checklist
-- [ ] Scaffold created with `create-qorechain-dapp`.
-- [ ] QoreX connects to testnet and account/network are shown accurately.
-- [ ] Event is deployed/recorded on testnet.
-- [ ] Attendee checks in with QoreX and receives a real transaction receipt.
-- [ ] One hybrid-signed transaction is verified/read back on-chain; document exact hash and evidence.
-- [ ] Verifier retrieves a real receipt from fresh chain data.
-- [ ] Wrong network, rejected signature, duplicate, closed event, and RPC failure are handled.
-- [ ] Public repo, MIT/Apache-2.0 license, README, cover image, testnet address, and <=3-minute demo are ready.
+- [x] Generated from `create-qorechain-dapp` and connected to QoreX native provider.
+- [ ] Hash a selected file locally and show the resulting digest.
+- [ ] Submit a real QoreX hybrid-signed testnet transaction containing the digest.
+- [ ] Independently read back and verify the hash, transaction and hybrid-signature evidence.
+- [ ] Public Vercel deployment and public repo instructions.
+- [ ] Handle wrong network, rejected signature, pending confirmation and chain/API failure.
+- [ ] Record a real transaction hash and evidence after a user-signed testnet run; no placeholder evidence.
 
-## Demo outline (2–3 minutes)
-1. State the problem and what a receipt proves.
-2. Connect QoreX on testnet.
-3. Create/open a demo event.
-4. Check in and approve the wallet prompt.
-5. Show confirmed receipt, hybrid signature evidence, and explorer/readback.
-6. Verify the receipt independently.
-7. Show duplicate or closed-event rejection.
-
-## Not in MVP
-Identity verification, private attendance, real-value ticketing, token rewards, multiple chains, and automated recurring events.
+## Three-minute demo
+1. Explain the narrow promise and public-data limits.
+2. Connect QoreX on Diana testnet and choose a harmless sample file.
+3. Show its local SHA-256 digest and approve the clearly described transaction in QoreX.
+4. Show chain confirmation, the hybrid verdict, and the receipt.
+5. Verify the receipt again from fresh chain data and compare the same file.
