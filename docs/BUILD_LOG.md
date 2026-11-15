@@ -21,6 +21,12 @@ Append entries as work happens. Record observed evidence, not intentions.
 - Decisions or risks: QoreX's QR pairing/deep-link proof flow is Dashboard-only. This QR opens Quantum Queue; the user then opens that URL inside QoreX's dApp browser to connect. It does not pair the mobile wallet back to the desktop browser.
 - Next: deploy to a public HTTPS origin before validating the QR with Google Lens and QoreX on a phone.
 
+### 2026-11-15 — Clarify desktop QoreX connection
+- Changed: the QR dialog now explains that scanning connects only the phone's page and links to the official QoreX Chrome/Edge extension for connecting the laptop tab. Added the same desktop/mobile distinction to setup and architecture notes.
+- Evidence/status: `npm run build` passed (TypeScript check and Vite production build). No live browser extension connection was performed.
+- Decisions or risks: the laptop connection requires QoreX's browser extension installed and unlocked in that browser; the extension must be switched to Diana testnet before testnet actions.
+- Next: install the official extension on the target desktop browser and confirm that QoreX injects its native provider on the deployed app origin.
+
 ## Entry template
 ### YYYY-MM-DD — Short change title
 - Changed:

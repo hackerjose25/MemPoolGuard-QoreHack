@@ -31,6 +31,8 @@ The current QoreX integration docs expose native `signAndBroadcast`, which retur
 
 QoreX's `qorex://connect` pairing and proof APIs are reserved to the QoreChain Dashboard origin. Do not reuse that flow or imply a QR scan remotely connects a phone wallet to the desktop browser. QoreX's supported general dApp flow is to open the app inside its in-app dApp browser and approve the site's connection there. References: [QoreX dApp Browser](https://docs.qorechain.io/qorex/dapp-browser/), [QoreX Integrations](https://docs.qorechain.io/developer-tools/qorex-integrations/).
 
+For a laptop browser, install and unlock the [QoreX browser extension](https://chromewebstore.google.com/detail/qorex/cflpnggbnnifibblifgbeobogdpfjpcg) in Chrome or Edge, switch it to Diana testnet, and connect from that browser tab. A mobile app connection is scoped to the phone's QoreX dApp browser session.
+
 ## Stages
 ### 0. Scaffold and prove transaction path
 - [x] Generate from the official fullstack-web starter.

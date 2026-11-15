@@ -173,6 +173,12 @@ export function App(): JSX.Element {
             <h2 id="connect-title">Continue with QoreX</h2>
             <p className="modal-intro">Scan to open Quantum Queue on your phone. Connect from inside QoreX’s dApp browser so the wallet can approve this site.</p>
 
+            <div className="desktop-connect-note">
+              <strong>Connecting this laptop?</strong>
+              <span>The phone QR connects the phone’s page only. To connect this laptop tab, use the QoreX browser extension in this browser.</span>
+              <a href="https://chromewebstore.google.com/detail/qorex/cflpnggbnnifibblifgbeobogdpfjpcg" target="_blank" rel="noreferrer">Install QoreX for Chrome or Edge <span aria-hidden="true">↗</span></a>
+            </div>
+
             <div className="qr-frame">
               <QRCodeSVG value={mobileUrl} size={212} level="M" marginSize={2} aria-label={`QR code for ${mobileUrl}`} />
             </div>
