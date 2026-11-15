@@ -1,0 +1,12 @@
+# Local dependencies and build output
+app/node_modules/
+app/dist/
+
+# Local environment files (keep only the safe template)
+app/.env
+app/.env.*
+!app/.env.example
+*.local
+
+# Local dev logs
+app/vite.*.log
