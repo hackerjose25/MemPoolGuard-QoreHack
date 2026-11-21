@@ -2,7 +2,7 @@
 
 ![Mempool Guard](docs/featured.png)
 
-**Live demo: https://mempool-guard.vercel.app/** · Category: **Quantum Pass** · License: [MIT](LICENSE)
+**Live demo: https://mempool-guard.vercel.app/** · **Demo video: https://youtu.be/ZPW_kj11_s8** · Category: **Quantum Pass** · License: [MIT](LICENSE)
 
 **A post-quantum validator arcade game on the QoreChain Diana testnet.** Built for the *Build Before Q-Day* Quantum Pass track.
 

@@ -5,7 +5,7 @@
 **Live demo:** https://mempool-guard.vercel.app/
 **Repository:** https://github.com/hackerjose25/MemPoolGuard-QoreHack
 **Featured image:** docs/featured.png
-**Demo video:** _TODO: add link (3 minutes or less)_
+**Demo video:** https://youtu.be/ZPW_kj11_s8
 **License:** MIT
 
 ## Tagline (one line)

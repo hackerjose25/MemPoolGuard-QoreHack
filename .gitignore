@@ -11,3 +11,9 @@ dist/
 # Editor / logs
 .vscode/
 *.log
+
+# Demo video renders (hosted on YouTube, too large for the repo)
+brag-output/
+*.mp4
+*.mov
+*.wav
