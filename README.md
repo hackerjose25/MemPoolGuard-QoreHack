@@ -41,11 +41,14 @@ You can play without a wallet. To submit a run on-chain you need the QoreX exten
 
 ## On-chain evidence (Diana testnet)
 
-- **Player and submitter address:** `qor1zheh9tukxvvmgvvjd3lq2fehd68h7av6ss3vz4`
+- **Player addresses:** `qor1zheh9tukxvvmgvvjd3lq2fehd68h7av6ss3vz4` and `qor1lapj3hleq2nk699zh00d3vf6753p0vmw9m632t`
 - **Scoreboard address (keyless):** `qor1mvtlqsty0aw70cj2zgu3y32hsza0pwnm898m5q`
-- **Hybrid-signed run transactions.** Both have code 0, a 4,627-byte ML-DSA-87 signature, and `pqc_hybrid_verify = verified`:
+- **Hybrid-signed run transactions.** All five have code 0, a 4,627-byte ML-DSA-87 signature, and `pqc_hybrid_verify = verified`:
   - [`2A65CCDD709784B2A7B75E3CF8E14C13D1E4F270277489BB16378A46C488DD48`](https://api-testnet.qore.host/cosmos/tx/v1beta1/txs/2A65CCDD709784B2A7B75E3CF8E14C13D1E4F270277489BB16378A46C488DD48): block 10,153,126, 1,300 points, replay-verified on the leaderboard
   - [`A44D2B462BE9B3C887D4C3D35B2271201587AB5805909EA2902FC795595FD0BE`](https://api-testnet.qore.host/cosmos/tx/v1beta1/txs/A44D2B462BE9B3C887D4C3D35B2271201587AB5805909EA2902FC795595FD0BE): block 10,152,719, 550 points
+  - [`409A6F1B5A8080F810F9DD41E14F5BD529CBBFD1DC2AF134A9E4785C346530AA`](https://api-testnet.qore.host/cosmos/tx/v1beta1/txs/409A6F1B5A8080F810F9DD41E14F5BD529CBBFD1DC2AF134A9E4785C346530AA): block 10,442,358, 3,650 points, the run shown in the demo video
+  - [`93748DC22AB9BEC97FF0C20F0C361903126B31B9EA6F8DCAB2376A7B4328AB26`](https://api-testnet.qore.host/cosmos/tx/v1beta1/txs/93748DC22AB9BEC97FF0C20F0C361903126B31B9EA6F8DCAB2376A7B4328AB26): block 10,440,962, 2,650 points
+  - [`09CBFF4B918CBC0397F4114AB92E41F4DD6CCC6D1452843D24B7C25E32C77D08`](https://api-testnet.qore.host/cosmos/tx/v1beta1/txs/09CBFF4B918CBC0397F4114AB92E41F4DD6CCC6D1452843D24B7C25E32C77D08): block 10,441,802, 2,450 points
 
 ## Honest limits
 

@@ -38,3 +38,8 @@ Only observed work and test results are recorded here.
   - The leaderboard shows the 1,300-point run with its replay check passing.
   - A shift starts from a live seed block, and the play screen fits a 1440×900 viewport.
   - No console errors (checked with headless Edge + Playwright).
+- **More on-chain runs (2026-11-20, a second address `qor1lapj3hleq2nk699zh00d3vf6753p0vmw9m632t`, read back from Diana REST on 2026-11-21):** each has code 0, a 1 uqor `MsgSend` to the scoreboard, the `PQCHybridSignature` extension with a 4,627 B ML-DSA-87 signature, and `pqc_hybrid_verify = verified` (`dilithium5`, `hybrid_mode = required`). The leaderboard replay was not re-checked for these runs.
+  - `409A6F1B5A8080F810F9DD41E14F5BD529CBBFD1DC2AF134A9E4785C346530AA`: block 10,442,358, memo `mg1:10442257:AAAARARARRARAARAAAAAAAAA:3650` (the run shown in the demo video).
+  - `93748DC22AB9BEC97FF0C20F0C361903126B31B9EA6F8DCAB2376A7B4328AB26`: block 10,440,962, memo `mg1:10440625:AARARRARARRAARARAARA:2650`.
+  - `09CBFF4B918CBC0397F4114AB92E41F4DD6CCC6D1452843D24B7C25E32C77D08`: block 10,441,802, memo `mg1:10441677:TRAAARRTRAAAARAAARA:2450`.
+- **Submission check (2026-11-21):** the live demo, repo, YouTube video (https://youtu.be/ZPW_kj11_s8) and all five run transactions return HTTP 200. `pnpm install --frozen-lockfile && pnpm build` in `quest/` passes, with one Vite warning about a chunk over 500 kB.

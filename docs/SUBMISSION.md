@@ -22,10 +22,13 @@ Q-Day is here, and forged transactions are flooding the mempool. You are the las
 - The leaderboard reads runs back from Diana REST and fails closed. A run counts only with code 0, a 4,627-byte ML-DSA-87 signature, `pqc_hybrid_verify = verified`, a seed block no more than 60 minutes old, and a replayed score equal to the claimed score.
 
 ## On-chain evidence (Diana)
-- Player: `qor1zheh9tukxvvmgvvjd3lq2fehd68h7av6ss3vz4`
+- Players: `qor1zheh9tukxvvmgvvjd3lq2fehd68h7av6ss3vz4` and `qor1lapj3hleq2nk699zh00d3vf6753p0vmw9m632t`
 - Scoreboard (keyless): `qor1mvtlqsty0aw70cj2zgu3y32hsza0pwnm898m5q`
 - Tx `2A65CCDD709784B2A7B75E3CF8E14C13D1E4F270277489BB16378A46C488DD48`: block 10,153,126, 1,300 points, replay-verified
 - Tx `A44D2B462BE9B3C887D4C3D35B2271201587AB5805909EA2902FC795595FD0BE`: block 10,152,719, 550 points
+- Tx `409A6F1B5A8080F810F9DD41E14F5BD529CBBFD1DC2AF134A9E4785C346530AA`: block 10,442,358, 3,650 points (the run shown in the demo video)
+- Tx `93748DC22AB9BEC97FF0C20F0C361903126B31B9EA6F8DCAB2376A7B4328AB26`: block 10,440,962, 2,650 points
+- Tx `09CBFF4B918CBC0397F4114AB92E41F4DD6CCC6D1452843D24B7C25E32C77D08`: block 10,441,802, 2,450 points
 
 ## Honest limits
 Replay proves that a score matches the signed moves on a real, recent block. It does not prove that a human played them. The chain proves which address signed a run, not who owns that address. This runs on the testnet only, and the app never asks for keys or seed phrases.
